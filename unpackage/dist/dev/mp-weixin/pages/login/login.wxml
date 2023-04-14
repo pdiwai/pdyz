@@ -1,1 +1,0 @@
-<view style="height:100vh;width:100vw;position:absolute"><view class="formDiv"><view class="imageDiv"><image class="imageStyle" src="/static/img/flower.png"></image></view><button>手机号登录</button><button bindtap="{{a}}">二维码登录</button><view class="pStyle">游客试用</view></view></view><image class="backgroundDiv" src="/static/img/background.jpg"></image>

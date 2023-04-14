@@ -8,26 +8,22 @@
 			<button @click="loginByPhone()">手机号登录</button>
 			<button>二维码登录</button>
 			<p class="pStyle" @click='loginForTourist()'>游客试用</p>
-			
+
 		</div>
 	</view>
 	<image class="backgroundDiv" src="../../static/img/background.jpg"></image>
 </template>
 
 <script lang="ts" setup>
-	
-	const loginByPhone=()=>{
+	const loginByPhone = () => {
 		uni.navigateTo({
-			url:'/pages/login/loginByPhone/loginByPhone'
+			url: '/pages/login/loginByPhone/loginByPhone'
 		})
 
 	}
-	
-	const loginForTourist=()=>{
-		uni.request({
-			url:'/register/anonimous',
-		})
-	
+
+	const loginForTourist = () => {
+
 	}
 </script>
 <style lang="less">
@@ -40,7 +36,9 @@
 		height: 400px;
 		margin-left: 20px;
 		margin-right: 20px;
-		background-color: rgba(259, 259, 259, 0.75);
+		background-color: rgba(259, 259, 259, 0.55);
+		border-radius: 20px;
+		box-shadow: 1px 2px 3px #9C3019;
 	}
 
 	.imageDiv {
