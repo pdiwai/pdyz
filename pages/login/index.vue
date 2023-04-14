@@ -5,9 +5,9 @@
 			<div class="imageDiv">
 				<image class="imageStyle" src="../../static/img/flower.png"></image>
 			</div>
-			<button>手机号登录</button>
+			<button @click="loginByPhone()">手机号登录</button>
 			<button>二维码登录</button>
-			<p class="pStyle">游客试用</p>
+			<p class="pStyle" @click='loginForTourist()'>游客试用</p>
 			
 		</div>
 	</view>
@@ -15,6 +15,20 @@
 </template>
 
 <script lang="ts" setup>
+	
+	const loginByPhone=()=>{
+		uni.navigateTo({
+			url:'/pages/login/loginByPhone/loginByPhone'
+		})
+
+	}
+	
+	const loginForTourist=()=>{
+		uni.request({
+			url:'/register/anonimous',
+		})
+	
+	}
 </script>
 <style lang="less">
 	.backgroundDiv {
