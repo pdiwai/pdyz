@@ -22,7 +22,7 @@ const _sfc_main = {
     console.log("App Hide");
   }
 };
-const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "C:/Users/admin/Desktop/pdyz/佩大悦/App.vue"]]);
+const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "C:/Users/admin/Desktop/佩大悦/App.vue"]]);
 function createApp() {
   const app = common_vendor.createSSRApp(App);
   return {

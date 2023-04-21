@@ -5,7 +5,7 @@
 			<div class="imageDiv">
 				<image class="imageStyle" src="../../static/img/flower.png"></image>
 			</div>
-			<button @click="loginByPhone()">手机号登录</button>
+			<button @click="loginByPhone()">PY帮你算</button>
 			<button>二维码登录</button>
 			<p class="pStyle" @click='loginForTourist()'>游客试用</p>
 
