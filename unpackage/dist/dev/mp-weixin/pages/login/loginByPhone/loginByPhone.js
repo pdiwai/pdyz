@@ -5,35 +5,86 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   setup(__props) {
     const arrForCalculator = common_vendor.reactive(["%", "CE", "C", "删除", "1/x", "x方", "根号x", "/", 7, 8, 9, "*", 4, 5, 6, "-", 1, 2, 3, "+", "+/-", 0, ".", "="]);
     const tempArrayView = common_vendor.ref([]);
-    const tempSignal = common_vendor.ref("");
     const clickBtn = (value) => {
+      const tempLength = common_vendor.ref(0);
       if (value === "删除") {
         tempArrayView.value = tempArrayView.value.slice(0, -1);
-        return;
-      } else if (value === "=") {
-        for (var i = 0; i < tempArrayView.value.length; i++) {
+      } else if (value === "CE" || value === "C") {
+        tempArrayView.value = [];
+      } else if (value === "1/x") {
+        tempArrayView.value = [1 / parseFloat(tempArrayView.value.toString().replace(/,/g, ""))];
+      } else if (value === "x方") {
+        tempArrayView.value = [Math.pow(parseFloat(tempArrayView.value.toString().replace(/,/g, "")), 2)];
+      } else if (value === "根号x") {
+        tempArrayView.value = [Math.sqrt(parseFloat(tempArrayView.value.toString().replace(/,/g, "")))];
+      } else if (value === "+/-") {
+        console.log(tempArrayView.value);
+        if (tempArrayView.value[0] === "-") {
+          tempArrayView.value = [tempArrayView.value.slice(0, 1)];
+        } else {
+          tempArrayView.value = [tempArrayView.value.unshift("-")];
         }
-        tempArrayView.value = ["v我50查看答案"];
       } else {
-        tempArrayView.value.push(String(value));
-        if (typeof value === "string") {
-          tempSignal.value = value;
+        const tempResult = common_vendor.ref(0);
+        const tempSignal = common_vendor.ref("");
+        tempArrayView.value.push(value);
+        for (var i = 0; i <= tempArrayView.value.length; i++) {
+          if (typeof tempArrayView.value[i] === "string") {
+            tempLength.value += 1;
+          }
+        }
+        if (tempLength.value > 1) {
+          if (typeof tempArrayView.value[0] === "string") {
+            tempArrayView.value.unshift(0);
+          }
+          for (var i = 0; i <= tempArrayView.value.length; i++) {
+            if (typeof tempArrayView.value[i] === "string") {
+              const numberOne = tempArrayView.value.slice(0, i).toString().replace(/,/g, "");
+              const numberTwo = tempArrayView.value.slice(i + 1, tempArrayView.value.length - 1).toString().replace(/,/g, "");
+              tempSignal.value = tempArrayView.value[i];
+              switch (tempSignal.value) {
+                case "+":
+                  tempResult.value = parseFloat(numberOne) + parseFloat(numberTwo);
+                  break;
+                case "-":
+                  tempResult.value = parseFloat(numberOne) - parseFloat(numberTwo);
+                  break;
+                case "*":
+                  tempResult.value = parseFloat(numberOne) * parseFloat(numberTwo);
+                  break;
+                case "/":
+                  tempResult.value = parseFloat(numberOne) / parseFloat(numberTwo);
+                  break;
+                case "%":
+                  tempResult.value = parseFloat(numberOne) % parseFloat(numberTwo);
+                  break;
+                case ".":
+                  tempResult.value = tempArrayView.value.slice(0, tempArrayView.value.length - 1).toString().replace(/,/g, "");
+                  break;
+              }
+              tempArrayView.value = [tempResult.value];
+              if (value !== "=") {
+                tempArrayView.value.push(value);
+              }
+              return;
+            }
+          }
         }
       }
     };
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.f(tempArrayView.value, (item, k0, i0) => {
+        a: common_vendor.f(tempArrayView.value, (item, index, i0) => {
           return {
             a: common_vendor.t(item),
-            b: item
+            b: index
           };
         }),
-        b: common_vendor.f(arrForCalculator, (item, k0, i0) => {
+        b: common_vendor.f(arrForCalculator, (item, index, i0) => {
           return {
             a: common_vendor.t(item),
-            b: item,
-            c: common_vendor.o(($event) => clickBtn(item), item)
+            b: index,
+            c: common_vendor.o(($event) => clickBtn(item), index)
           };
         })
       };
