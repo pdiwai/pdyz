@@ -9,7 +9,7 @@ if (!Math) {
   "./pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release.js";
   "./pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video.js";
   "./pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa.js";
-  "./pages/login/loginByPhone/loginByPhone.js";
+  "./pages/login/caculator/index.js";
 }
 const _sfc_main = {
   onLaunch: function() {

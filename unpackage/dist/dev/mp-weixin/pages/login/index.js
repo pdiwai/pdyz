@@ -3,16 +3,16 @@ const common_vendor = require("../../common/vendor.js");
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "index",
   setup(__props) {
-    const loginByPhone = () => {
+    const caculatorPage = () => {
       common_vendor.index.navigateTo({
-        url: "/pages/login/loginByPhone/loginByPhone"
+        url: "/pages/login/caculator/index"
       });
     };
     const loginForTourist = () => {
     };
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.o(($event) => loginByPhone()),
+        a: common_vendor.o(($event) => caculatorPage()),
         b: common_vendor.o(($event) => loginForTourist())
       };
     };

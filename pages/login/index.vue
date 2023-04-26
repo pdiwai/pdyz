@@ -5,7 +5,7 @@
 			<div class="imageDiv">
 				<image class="imageStyle" src="../../static/img/flower.png"></image>
 			</div>
-			<button @click="loginByPhone()">PY帮你算</button>
+			<button @click="caculatorPage()">PY帮你算</button>
 			<button>二维码登录</button>
 			<p class="pStyle" @click='loginForTourist()'>游客试用</p>
 
@@ -15,9 +15,9 @@
 </template>
 
 <script lang="ts" setup>
-	const loginByPhone = () => {
+	const caculatorPage = () => {
 		uni.navigateTo({
-			url: '/pages/login/loginByPhone/loginByPhone'
+			url: '/pages/login/caculator/index'
 		})
 
 	}
