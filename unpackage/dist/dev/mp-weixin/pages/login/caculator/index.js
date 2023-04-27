@@ -30,7 +30,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         const continuousStart = common_vendor.ref(0);
         tempArrayView.value.push(value);
         for (var i = 0; i <= tempArrayView.value.length; i++) {
-          if (typeof tempArrayView.value[i] === "string") {
+          if (typeof tempArrayView.value[i] === "string" && tempArrayView.value[i] !== ".") {
             tempLength.value += 1;
           }
         }
@@ -39,7 +39,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
             tempArrayView.value.unshift(0);
           }
           for (var i = 0; i <= tempArrayView.value.length; i++) {
-            if (typeof tempArrayView.value[i] === "string") {
+            if (typeof tempArrayView.value[i] === "string" && tempArrayView.value[i] !== ".") {
               if (typeof tempArrayView.value[i + 1] === "string") {
                 isContinuousSignal.value = true;
                 if (typeof tempArrayView.value[i - 1] === "number") {
@@ -78,8 +78,16 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
                 } else {
                   tempArrayView.value.push(value);
                 }
+              } else {
+                if (isContinuousSignal.value) {
+                  tempArrayView.value[continuousStart.value] = tempArrayView.value[tempArrayView.value.length - 1];
+                  tempArrayView.value = tempArrayView.value.slice(0, continuousStart.value + 1);
+                }
               }
               return;
+            }
+            if (tempArrayView.value[i] === ".") {
+              continue;
             }
           }
         }

@@ -45,11 +45,11 @@
 			tempArrayView.value.push(value as any)
 			// 把输入内容里的计算符号都拎出来
 			for (var i = 0; i <= tempArrayView.value.length; i++) {
-				if (typeof (tempArrayView.value[i]) === 'string') {
+				if (typeof (tempArrayView.value[i]) === 'string' && tempArrayView.value[i] !== '.') {
 					tempLength.value += 1
 				}
 			}
-			// 如果输入的符号数量大于1，就把前面输入的内容自动计算
+			// 如果输入的计算符号数量大于0，就把前面输入的内容自动计算
 			if (tempLength.value > 1) {
 				// 如果第一个输入的就是符号，就在符号前加个0
 				if (typeof (tempArrayView.value[0]) === 'string') {
@@ -57,13 +57,13 @@
 				}
 				for (var i = 0; i <= tempArrayView.value.length; i++) {
 					// 遍历数组，把第一个符号当做计算符号，并根据符号进行表达式计算
-					if (typeof (tempArrayView.value[i]) === 'string') {
+					if (typeof (tempArrayView.value[i]) === 'string' && tempArrayView.value[i] !== '.') {
 						if (typeof (tempArrayView.value[i + 1]) === 'string') {
 							// 如果连续按了多次符号，就不处理计算;将判断是否连续输入符号的变量赋值，底下会判断这个变量来处理符号替换
 							isContinuousSignal.value = true
 							// 找出数字后连续输入符号时，第一个符号的下标
-							if(typeof (tempArrayView.value[i - 1]) === 'number'){
-								continuousStart.value=i
+							if (typeof (tempArrayView.value[i - 1]) === 'number') {
+								continuousStart.value = i
 							}
 						} else {
 							const numberOne = ((tempArrayView.value.slice(0, i)).toString()).replace(/,/g, '')
@@ -96,14 +96,22 @@
 						if (value !== '=') {
 							// 如果连续按了多个符号，就把符号替换成最新的那个
 							if (isContinuousSignal.value) {
-								tempArrayView.value[continuousStart.value] = tempArrayView.value[tempArrayView.value.length-1]
-								tempArrayView.value = tempArrayView.value.slice(0, continuousStart.value+1)
+								tempArrayView.value[continuousStart.value] = tempArrayView.value[tempArrayView.value.length - 1]
+								tempArrayView.value = tempArrayView.value.slice(0, continuousStart.value + 1)
 							} else {
 								// 如果是正常按了第二个符号，把表达式计算的同时，把第二个符号追加上去
 								tempArrayView.value.push(value as any)
 							}
+						} else {
+							if (isContinuousSignal.value) {
+								tempArrayView.value[continuousStart.value] = tempArrayView.value[tempArrayView.value.length - 1]
+								tempArrayView.value = tempArrayView.value.slice(0, continuousStart.value + 1)
+							}
 						}
 						return;
+					}
+					if (tempArrayView.value[i] === '.') {
+						continue
 					}
 				}
 			}
