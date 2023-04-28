@@ -1,0 +1,1 @@
+"use strict";const e=require("../../common/vendor.js"),n=e.defineComponent({__name:"index",setup:n=>(n,o)=>({a:e.o((n=>{e.index.navigateTo({url:"/pages/login/caculator/index"})})),b:e.o((e=>{}))})});wx.createPage(n);

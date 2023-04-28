@@ -1,0 +1,1 @@
+"use strict";const e=require("../../../common/vendor.js"),t=e.defineComponent({__name:"tabbar-1",setup(t){const n=e.ref("");n.value="hello";return(t,o)=>({a:e.t(n.value),b:e.o((e=>{}))})}});wx.createPage(t);
