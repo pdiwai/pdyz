@@ -56,14 +56,12 @@ const _sfc_main = {
   }
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _a, _b, _c, _d, _e;
+  var _a, _b, _c;
   return {
     a: common_vendor.t((_a = $setup.location[0]) == null ? void 0 : _a.name),
     b: common_vendor.n("qi-" + ((_b = $setup.weather) == null ? void 0 : _b.icon)),
     c: common_vendor.t((_c = $setup.weather) == null ? void 0 : _c.temp),
-    d: common_vendor.t((_d = $setup.weather) == null ? void 0 : _d.text),
-    e: common_vendor.t((_e = $setup.weather) == null ? void 0 : _e.windDir),
-    f: common_vendor.f($setup.dayWeather, (item, index, i0) => {
+    d: common_vendor.f($setup.dayWeather, (item, index, i0) => {
       return {
         a: common_vendor.n("qi-" + (item == null ? void 0 : item.iconDay)),
         b: common_vendor.n("qi-" + (item == null ? void 0 : item.iconNight)),

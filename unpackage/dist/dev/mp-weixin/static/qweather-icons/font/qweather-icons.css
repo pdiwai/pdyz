@@ -20,7 +20,7 @@ url("./fonts/qweather-icons.ttf?7c5ed55880254ecc7b3b7a4b2be61fef") format("truet
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-  vertical-align: -.125em;
+  /* vertical-align: -.125em; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

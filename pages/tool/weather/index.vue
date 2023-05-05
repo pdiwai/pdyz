@@ -1,21 +1,27 @@
 <template>
-	<view>
+	<view style="
+		height: 100vh;width: 100vw;position: absolute;">
 		<div>
-			<input type="text" placeholder="请输入城市名称" class="searchInput">
+			<input type="text" p class="searchInput">
 		</div>
-		<div>
-			当前城市：{{location[0]?.name}}
+		<div style="text-align: center;margin-bottom: 20px;color: white;">
+			{{location[0]?.name}}
 		</div>
 		<div class="icon">
 			<i :class="'qi-'+weather?.icon"></i>
-			<div class="label">{{weather?.temp}}°C {{weather?.text}} {{weather?.windDir}}</div>
 		</div>
-		多天预报
-		<div v-for="(item,index) in dayWeather" :key="index">
-			<i :class="'qi-'+item?.iconDay"></i><i :class="'qi-'+item?.iconNight"></i>{{item?.fxDate}} {{item?.textDay}}
-			{{item.tempMin}}°C-{{item.tempMax}}°C
+		<div class="label">°C
+			<p style="font-size: 6rem;float: left;">{{weather?.temp}}</p>
+		</div>
+		<div style="color: white;margin-left: 20px;font-size: 18px;">
+			<div v-for="(item,index) in dayWeather" :key="index">
+				<i :class="'qi-'+item?.iconDay"></i><i :class="'qi-'+item?.iconNight"></i>{{item?.fxDate}}
+				{{item?.textDay}}
+				{{item.tempMin}}°C-{{item.tempMax}}°C
+			</div>
 		</div>
 	</view>
+	<image class="backgroundDiv" src="https://img95.699pic.com/photo/40136/5123.gif_wh860.gif"></image>
 </template>
 <script lang="ts">
 	import { ref } from 'vue'
@@ -75,31 +81,46 @@
 <style lang="less">
 	@import url("../../../static/qweather-icons/font/qweather-icons.css");
 
+	.backgroundDiv {
+		height: 110vh;
+		width: 200vw;
+		// background-color: LightSlateGray;
+	}
+
+
 	.searchInput {
 		border-radius: 20px;
 		margin: 10px;
-		background-color: darkgray;
+		background-color: transparent;
 		height: 30px;
+		border: 1px solid white;
 	}
 
 
 	.icon {
+		margin-left: 20px;
 		background-color: transparent;
-		border-radius: 20px;
-		font-size: 9rem;
-		text-align: center;
-		color: palevioletred;
+		font-size: 3.3rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: white;
+		border-radius: 50%;
+		border: 5px solid Gainsboro;
+		box-shadow: 0px 0px 7px Gainsboro;
+		width: 66px;
+		height: 66px;
+		float: left;
 	}
 
 	.label {
-		font-family: qweather-icons;
-	}
-
-	.label {
-		width: 100%;
-		overflow: hidden;
-		font-size: 2rem;
+		// font-family: qweather-icons;
+		font-size: 20px;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		height: 100px;
+		color: white;
+		margin-left: 220px;
+		margin-bottom: 50px;
 	}
 </style>
