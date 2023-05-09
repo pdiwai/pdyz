@@ -1,10 +1,8 @@
 <template>
 	<view style="
-		height: 100vh;width: 100vw;position: absolute;">
-		<!-- <div>
-			<input type="text" p class="searchInput">
-		</div> -->
-		<div style="text-align: center;margin-top:20px;margin-bottom: ;: 20px;color: #30363b;">
+		height: 100vh;width: 100vw;position: absolute;
+		z-index: 2;">
+		<div style="text-align: center;margin:20px 0px 0px 0px;">
 			{{location[0]?.name}}
 		</div>
 		<div class=" icon iconBig">
@@ -14,22 +12,22 @@
 			<p style="font-size: 5.5rem;float: left;">{{weather?.temp}}</p>
 			<p>°C</p>
 		</div>
-		<div style="margin-left: 205px; margin-top: -35px;color: #30363b">————————
-			<p style="margin-left: 20px;">{{weather?.windScale}}级 体感:{{weather?.feelsLike}}°C</p>
+		<div style="margin: -35px 0px 0px 205px;">————————
+			<p style="margin:0px 0px 0px 20px;">{{weather?.windScale}}级 体感:{{weather?.feelsLike}}°C</p>
 		</div>
-		<div style="color: #30363b;margin-left: 20px;font-size: 18px;margin-top: 25px;">
+		<div style="margin:25px 0px 0px 20px;font-size: 18px;">
 			<div v-for="(item,index) in dayWeather" :key="index">
 				<i :class="'qi-'+item?.iconDay" class="icon iconSmall"></i>
 				<p>{{item?.fxDate}}</p>
-				<p style="margin-bottom: 20px;">{{item.tempMin}}/{{item.tempMax}}°C
+				<p style="margin:0px 0px 20px 0px;">{{item.tempMin}}/{{item.tempMax}}°C
 					{{item?.windDirDay}}{{item?.windScaleDay}}级 {{item?.textDay}}
 				</p>
 			</div>
 		</div>
 	</view>
-
-	<image style="" class="backgroundDiv"
-		src='https://img.freepik.com/free-photo/concrete-room-corner-shadow-sunlight-wallpaper-concept_53876-31794.jpg?w=826&t=st=1683600911~exp=1683601511~hmac=0c0bee669698c01fcaa61bc81c4f95110f6a3f0d3053ad633e119eb0ebfef739'>
+	<div class="divBorder"></div>
+	<image class="backgroundDiv"
+		src='https://img.freepik.com/premium-photo/white-cumulus-clouds-against-blue-sky-beautiful-large-thunderclouds-sky_423170-3211.jpg?w=360'>
 	</image>
 </template>
 <script lang="ts">
@@ -90,24 +88,19 @@
 <style lang="less">
 	@import url("../../../static/qweather-icons/font/qweather-icons.css");
 
+	p {
+		color: #30363b;
+	}
+
 	.backgroundDiv {
 		height: 100vh;
 		width: 100vw;
+		z-index: 0;
 	}
-
-
-	.searchInput {
-		border-radius: 20px;
-		margin: 10px;
-		background-color: transparent;
-		height: 30px;
-		border: 1px solid #30363b;
-	}
-
 
 	.icon {
 		margin-left: 20px;
-		background-color: transparent;
+		background-color: #ebe7ff;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -119,8 +112,8 @@
 		font-size: 3.4rem;
 		width: 68px;
 		height: 68px;
-		box-shadow: 0px 0px 7px #30363b;
-		border: 5px solid #30363b;
+		box-shadow: 0px 0px 7px white;
+		border: 5px solid white;
 		float: left;
 		margin-top: 20px;
 
@@ -135,13 +128,19 @@
 	}
 
 	.label {
-		// font-family: qweather-icons;
 		font-size: 20px;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		height: 100px;
-		color: #30363b;
-		margin-left: 220px;
-		margin-bottom: 50px;
+		color: #394046;
+		margin: 0px 0px 50px 220px;
+	}
+
+	.divBorder {
+		border-right: 2px solid #394046;
+		height: 610px;
+		margin: 140px 55px;
+		position: absolute;
+		z-index: 1;
 	}
 </style>
