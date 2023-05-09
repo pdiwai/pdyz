@@ -1083,29 +1083,39 @@ url("../../../static/qweather-icons/font/fonts/qweather-icons.ttf?7c5ed55880254e
 .qi-unknown-fill::before { content: "\f209";
 }
 .backgroundDiv {
-  height: 110vh;
-  width: 200vw;
+  height: 100vh;
+  width: 100vw;
 }
 .searchInput {
   border-radius: 20px;
   margin: 10px;
   background-color: transparent;
   height: 30px;
-  border: 1px solid white;
+  border: 1px solid #30363b;
 }
 .icon {
   margin-left: 20px;
   background-color: transparent;
-  font-size: 3.3rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: #30363b;
   border-radius: 50%;
-  border: 5px solid Gainsboro;
-  box-shadow: 0px 0px 7px Gainsboro;
-  width: 66px;
-  height: 66px;
+}
+.iconBig {
+  font-size: 3.4rem;
+  width: 68px;
+  height: 68px;
+  box-shadow: 0px 0px 7px #30363b;
+  border: 5px solid #30363b;
+  float: left;
+  margin-top: 20px;
+}
+.iconSmall {
+  font-size: 1.3rem;
+  border: 2px solid Gainsboro;
+  width: 28px;
+  height: 28px;
   float: left;
 }
 .label {
@@ -1113,7 +1123,7 @@ url("../../../static/qweather-icons/font/fonts/qweather-icons.ttf?7c5ed55880254e
   text-overflow: ellipsis;
   white-space: nowrap;
   height: 100px;
-  color: white;
+  color: #30363b;
   margin-left: 220px;
   margin-bottom: 50px;
 }

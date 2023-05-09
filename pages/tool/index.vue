@@ -11,7 +11,7 @@
 
 		</div>
 	</view>
-	<image class="backgroundDiv" src="../../static/img/background.jpg"></image>
+	<image class="backgroundDiv" src="https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2149008800.jpg?w=740&t=st=1683599867~exp=1683600467~hmac=c2bd24e788b8e05f2eb33d6ddc4aa400ded4b55f720380b97067923bbb11f6dd"></image>
 </template>
 
 <script lang="ts" setup>

@@ -56,20 +56,23 @@ const _sfc_main = {
   }
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _a, _b, _c;
+  var _a, _b, _c, _d, _e;
   return {
     a: common_vendor.t((_a = $setup.location[0]) == null ? void 0 : _a.name),
     b: common_vendor.n("qi-" + ((_b = $setup.weather) == null ? void 0 : _b.icon)),
     c: common_vendor.t((_c = $setup.weather) == null ? void 0 : _c.temp),
-    d: common_vendor.f($setup.dayWeather, (item, index, i0) => {
+    d: common_vendor.t((_d = $setup.weather) == null ? void 0 : _d.windScale),
+    e: common_vendor.t((_e = $setup.weather) == null ? void 0 : _e.feelsLike),
+    f: common_vendor.f($setup.dayWeather, (item, index, i0) => {
       return {
         a: common_vendor.n("qi-" + (item == null ? void 0 : item.iconDay)),
-        b: common_vendor.n("qi-" + (item == null ? void 0 : item.iconNight)),
-        c: common_vendor.t(item == null ? void 0 : item.fxDate),
-        d: common_vendor.t(item == null ? void 0 : item.textDay),
-        e: common_vendor.t(item.tempMin),
-        f: common_vendor.t(item.tempMax),
-        g: index
+        b: common_vendor.t(item == null ? void 0 : item.fxDate),
+        c: common_vendor.t(item.tempMin),
+        d: common_vendor.t(item.tempMax),
+        e: common_vendor.t(item == null ? void 0 : item.windDirDay),
+        f: common_vendor.t(item == null ? void 0 : item.windScaleDay),
+        g: common_vendor.t(item == null ? void 0 : item.textDay),
+        h: index
       };
     })
   };
