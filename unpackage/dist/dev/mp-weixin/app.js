@@ -11,6 +11,7 @@ if (!Math) {
   "./pages/tabbar-3-detial/tabbar-3-qa/tabbar-3-qa.js";
   "./pages/tool/caculator/index.js";
   "./pages/tool/weather/index.js";
+  "./pages/tool/weather/chooseCity.js";
 }
 const _sfc_main = {
   onLaunch: function() {

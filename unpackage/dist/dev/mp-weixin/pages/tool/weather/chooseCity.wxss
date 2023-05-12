@@ -1082,83 +1082,11 @@ url("../../../static/qweather-icons/font/fonts/qweather-icons.ttf?7c5ed55880254e
 }
 .qi-unknown-fill::before { content: "\f209";
 }
-.widthHight {
-  height: 100%;
-  width: 100%;
-}
 p {
   color: #30363b;
-}
-.tabsStyle {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-.tabStyle {
-  width: 50%;
-  text-align: center;
-  margin-top: 15px;
-}
-.tabWrap {
-  width: 100%;
-  height: calc(100% - 67px);
-  position: relative;
 }
 .backgroundDiv {
   height: 100vh;
   width: 100vw;
-}
-.icon {
-  margin-left: 20px;
-  background-color: #ebe7ff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #30363b;
-  border-radius: 50%;
-}
-.iconBig {
-  font-size: 3.4rem;
-  width: 68px;
-  height: 68px;
-  box-shadow: 0px 0px 7px white;
-  border: 5px solid white;
-  float: left;
-  margin-top: 40px;
-}
-.iconSmall {
-  font-size: 1.3rem;
-  border: 2px solid Gainsboro;
-  width: 28px;
-  height: 28px;
-  float: left;
-}
-.label {
-  font-size: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  height: 100px;
-  color: #394046;
-  margin: 0px 0px 50px 220px;
-}
-.divBorder {
-  border-right: 2px solid #394046;
-  height: 580px;
-  margin: -550px 55px;
-  position: absolute;
-  z-index: -1;
-}
-.divAdd {
-  border: 3px solid #515c64;
-  height: 500px;
-  width: 300px;
-  position: absolute;
-  margin: 60px 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 90px;
-  color: #57626b;
+  z-index: 0;
 }

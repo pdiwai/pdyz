@@ -5,7 +5,7 @@ const _sfc_main = {
     const cityName = common_vendor.ref("无锡");
     const tabs = [
       { label: cityName.value, index: 0 },
-      { label: "其他", index: 1 }
+      { label: "添加城市", index: 1 }
     ];
     const currentTab = common_vendor.ref(0);
     const weather = common_vendor.ref();
@@ -49,6 +49,11 @@ const _sfc_main = {
     };
     const swiperTab = () => {
     };
+    const addCity = () => {
+      common_vendor.index.navigateTo({
+        url: "/pages/tool/weather/chooseCity"
+      });
+    };
     return {
       weather,
       location,
@@ -61,7 +66,8 @@ const _sfc_main = {
       tabs,
       currentTab,
       changeCurrentTab,
-      swiperTab
+      swiperTab,
+      addCity
     };
   },
   onPullDownRefresh() {
@@ -95,7 +101,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         h: index
       };
     }),
-    g: common_vendor.o((...args) => $setup.swiperTab && $setup.swiperTab(...args))
+    g: common_vendor.o((...args) => $setup.addCity && $setup.addCity(...args)),
+    h: common_vendor.o((...args) => $setup.swiperTab && $setup.swiperTab(...args))
   };
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/admin/Desktop/佩大悦/pages/tool/weather/index.vue"]]);
