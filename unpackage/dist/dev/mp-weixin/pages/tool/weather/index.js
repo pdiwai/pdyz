@@ -2,6 +2,36 @@
 const common_vendor = require("../../../common/vendor.js");
 const _sfc_main = {
   setup() {
+    let chart = null;
+    const ec = common_vendor.ref();
+    const initChart = (canvas, width, height, dpr) => {
+      chart = echarts.init(canvas, null, {
+        width,
+        height,
+        devicePixelRatio: dpr
+      });
+      canvas.setChart(chart);
+      let option = {
+        xAxis: {
+          type: "category",
+          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [{
+          data: [120, 200, 150, 80, 70, 110, 130],
+          type: "bar",
+          showBackground: true,
+          backgroundStyle: {
+            color: "rgba(180, 180, 180, 0.2)"
+          }
+        }]
+      };
+      chart.setOption(option);
+      return chart;
+    };
+    ec.value = { onInit: initChart };
     const cityName = common_vendor.ref("无锡");
     const tabs = [
       { label: cityName.value, index: 0 },
@@ -75,6 +105,10 @@ const _sfc_main = {
     common_vendor.index.stopPullDownRefresh();
   }
 };
+if (!Array) {
+  const _component_ec_canvas = common_vendor.resolveComponent("ec-canvas");
+  _component_ec_canvas();
+}
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   var _a, _b, _c, _d;
   return {
@@ -101,8 +135,13 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         h: index
       };
     }),
-    g: common_vendor.o((...args) => $setup.addCity && $setup.addCity(...args)),
-    h: common_vendor.o((...args) => $setup.swiperTab && $setup.swiperTab(...args))
+    g: common_vendor.p({
+      id: "echarts",
+      ["canvas-id"]: "echarts",
+      ec: "{{ec}}"
+    }),
+    h: common_vendor.o((...args) => $setup.addCity && $setup.addCity(...args)),
+    i: common_vendor.o((...args) => $setup.swiperTab && $setup.swiperTab(...args))
   };
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/admin/Desktop/佩大悦/pages/tool/weather/index.vue"]]);

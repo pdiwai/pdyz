@@ -1082,6 +1082,14 @@ url("../../../static/qweather-icons/font/fonts/qweather-icons.ttf?7c5ed55880254e
 }
 .qi-unknown-fill::before { content: "\f209";
 }
+.echarts {
+  width: 800rpx;
+  height: 800rpx;
+}
+ec-canvas {
+  width: 100%;
+  height: 100%;
+}
 .widthHight {
   height: 100%;
   width: 100%;
@@ -1146,7 +1154,7 @@ p {
 .divBorder {
   border-right: 2px solid #394046;
   height: 580px;
-  margin: -550px 55px;
+  margin: -600px 55px;
   position: absolute;
   z-index: -1;
 }
