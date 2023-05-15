@@ -1090,3 +1090,15 @@ p {
   width: 100vw;
   z-index: 0;
 }
+.searchInput {
+  border-radius: 20px;
+  margin: 10px;
+  background-color: transparent;
+  height: 30px;
+  border: 1px solid #30363b;
+}
+.cityOption {
+  text-align: center;
+  padding: 10px;
+  box-shadow: 1px 0px 1px 0px #45648c;
+}

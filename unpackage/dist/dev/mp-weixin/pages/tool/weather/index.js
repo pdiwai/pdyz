@@ -2,36 +2,6 @@
 const common_vendor = require("../../../common/vendor.js");
 const _sfc_main = {
   setup() {
-    let chart = null;
-    const ec = common_vendor.ref();
-    const initChart = (canvas, width, height, dpr) => {
-      chart = echarts.init(canvas, null, {
-        width,
-        height,
-        devicePixelRatio: dpr
-      });
-      canvas.setChart(chart);
-      let option = {
-        xAxis: {
-          type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-        },
-        yAxis: {
-          type: "value"
-        },
-        series: [{
-          data: [120, 200, 150, 80, 70, 110, 130],
-          type: "bar",
-          showBackground: true,
-          backgroundStyle: {
-            color: "rgba(180, 180, 180, 0.2)"
-          }
-        }]
-      };
-      chart.setOption(option);
-      return chart;
-    };
-    ec.value = { onInit: initChart };
     const cityName = common_vendor.ref("无锡");
     const tabs = [
       { label: cityName.value, index: 0 },
@@ -41,6 +11,7 @@ const _sfc_main = {
     const weather = common_vendor.ref();
     const location = common_vendor.ref([]);
     const dayWeather = common_vendor.ref([]);
+    const hourWeather = common_vendor.ref([]);
     const getCity = () => {
       common_vendor.index.request({
         url: "https://geoapi.qweather.com/v2/city/lookup?location=" + cityName.value + "&key=d4e3a54a435b49b684e4c84aecc63f9c",
@@ -68,10 +39,23 @@ const _sfc_main = {
         }
       });
     };
+    const getHourWeather = () => {
+      common_vendor.index.request({
+        url: "https://devapi.qweather.com/v7/weather/24h?location=101190201&key=d4e3a54a435b49b684e4c84aecc63f9c",
+        success(res) {
+          const tempValue = res.data;
+          hourWeather.value = tempValue.hourly;
+          for (let i = 0; i <= hourWeather.value.length; i++) {
+            hourWeather.value[i].fxTime = hourWeather.value[i].fxTime.slice(11, 16);
+          }
+        }
+      });
+    };
     const init = () => {
       getCity();
       getNowWeather();
       getDayWeather();
+      getHourWeather();
     };
     init();
     const changeCurrentTab = (itemValue) => {
@@ -97,7 +81,9 @@ const _sfc_main = {
       currentTab,
       changeCurrentTab,
       swiperTab,
-      addCity
+      addCity,
+      getHourWeather,
+      hourWeather
     };
   },
   onPullDownRefresh() {
@@ -105,10 +91,6 @@ const _sfc_main = {
     common_vendor.index.stopPullDownRefresh();
   }
 };
-if (!Array) {
-  const _component_ec_canvas = common_vendor.resolveComponent("ec-canvas");
-  _component_ec_canvas();
-}
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   var _a, _b, _c, _d;
   return {
@@ -123,7 +105,15 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     c: common_vendor.t((_b = $setup.weather) == null ? void 0 : _b.temp),
     d: common_vendor.t((_c = $setup.weather) == null ? void 0 : _c.windScale),
     e: common_vendor.t((_d = $setup.weather) == null ? void 0 : _d.feelsLike),
-    f: common_vendor.f($setup.dayWeather, (item, index, i0) => {
+    f: common_vendor.f($setup.hourWeather, (item, index, i0) => {
+      return {
+        a: common_vendor.n("qi-" + (item == null ? void 0 : item.icon)),
+        b: common_vendor.t(item == null ? void 0 : item.fxTime),
+        c: common_vendor.t(item.temp),
+        d: index
+      };
+    }),
+    g: common_vendor.f($setup.dayWeather, (item, index, i0) => {
       return {
         a: common_vendor.n("qi-" + (item == null ? void 0 : item.iconDay)),
         b: common_vendor.t(item == null ? void 0 : item.fxDate),
@@ -134,11 +124,6 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         g: common_vendor.t(item == null ? void 0 : item.textDay),
         h: index
       };
-    }),
-    g: common_vendor.p({
-      id: "echarts",
-      ["canvas-id"]: "echarts",
-      ec: "{{ec}}"
     }),
     h: common_vendor.o((...args) => $setup.addCity && $setup.addCity(...args)),
     i: common_vendor.o((...args) => $setup.swiperTab && $setup.swiperTab(...args))

@@ -31,7 +31,14 @@
 									{{ weather?.windScale }}级 体感:{{ weather?.feelsLike }}°C
 								</p>
 							</div>
-							<div style="margin: 25px 0px 0px 20px; font-size: 18px">
+							<scroll-view style="height: 75px;margin: 25px 0px 0px 20px; " scroll-y="true">
+								<div v-for="(item, index) in hourWeather" :key="index">
+									<i :class="'qi-' + item?.icon" class="icon iconSmall" style="background-color: #394046;color: white;"></i>
+									<p style="margin: 0px 0px 20px 0px">{{ item?.fxTime }} {{ item.temp }}°C </p>
+								</div>
+							</scroll-view>
+
+							<div style="margin: 25px 0px 0px 20px; font-size: 18px;">
 								<div v-for="(item, index) in dayWeather" :key="index">
 									<i :class="'qi-' + item?.iconDay" class="icon iconSmall"></i>
 									<p>{{ item?.fxDate }}</p>
@@ -61,6 +68,7 @@
 	<image class="backgroundDiv"
 		src="https://img.freepik.com/premium-photo/white-cumulus-clouds-against-blue-sky-beautiful-large-thunderclouds-sky_423170-3211.jpg?w=360">
 	</image>
+
 </template>
 <script lang="ts">
 	import { ref } from "vue";
@@ -70,10 +78,11 @@
 		LocationType,
 		CityVo,
 		DailyType,
-		DayWeatherVo,
+		DayWeatherVo, HourlyType, HourlyWeatherVo
 	} from "./type";
 	export default {
 		setup() {
+
 			const cityName = ref<string>("无锡");
 			const tabs = [
 				{ label: cityName.value, index: 0 },
@@ -83,6 +92,7 @@
 			const weather = ref<NowType>();
 			const location = ref<Array<LocationType>>([]);
 			const dayWeather = ref<Array<DailyType>>([]);
+			const hourWeather = ref<Array<HourlyType>>([]);
 			const getCity = () => {
 				uni.request({
 					url:
@@ -113,10 +123,24 @@
 					},
 				});
 			};
+
+			const getHourWeather = () => {
+				uni.request({
+					url: "https://devapi.qweather.com/v7/weather/24h?location=101190201&key=d4e3a54a435b49b684e4c84aecc63f9c",
+					success(res) {
+						const tempValue = res.data as unknown as HourlyWeatherVo;
+						hourWeather.value = tempValue.hourly
+						for (let i = 0; i <= hourWeather.value.length; i++) {
+							hourWeather.value[i].fxTime = hourWeather.value[i].fxTime.slice(11, 16)
+						}
+					},
+				});
+			};
 			const init = () => {
 				getCity();
 				getNowWeather();
 				getDayWeather();
+				getHourWeather()
 			};
 			init();
 
@@ -142,7 +166,7 @@
 				tabs,
 				currentTab,
 				changeCurrentTab,
-				swiperTab, addCity
+				swiperTab, addCity, getHourWeather, hourWeather
 			};
 		},
 
@@ -155,6 +179,7 @@
 
 <style lang="less">
 	@import url("../../../static/qweather-icons/font/qweather-icons.css");
+
 
 	.widthHight {
 		height: 100%;
@@ -218,6 +243,7 @@
 		float: left;
 	}
 
+
 	.label {
 		font-size: 20px;
 		text-overflow: ellipsis;
@@ -228,11 +254,13 @@
 	}
 
 	.divBorder {
+
 		border-right: 2px solid #394046;
-		height: 580px;
-		margin: -550px 55px;
+		height: 635px;
+		margin: -650px 55px;
 		position: absolute;
 		z-index: -1;
+
 	}
 
 	.divAdd {
