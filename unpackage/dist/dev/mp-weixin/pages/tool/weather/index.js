@@ -43,10 +43,13 @@ const _sfc_main = {
       common_vendor.index.request({
         url: "https://devapi.qweather.com/v7/weather/24h?location=101190201&key=d4e3a54a435b49b684e4c84aecc63f9c",
         success(res) {
+          var _a;
           const tempValue = res.data;
           hourWeather.value = tempValue.hourly;
           for (let i = 0; i <= hourWeather.value.length; i++) {
-            hourWeather.value[i].fxTime = hourWeather.value[i].fxTime.slice(11, 16);
+            if ((_a = hourWeather.value[i]) == null ? void 0 : _a.fxTime) {
+              hourWeather.value[i].fxTime = hourWeather.value[i].fxTime.slice(11, 16);
+            }
           }
         }
       });
@@ -93,7 +96,7 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   var _a, _b, _c, _d;
-  return {
+  return common_vendor.e({
     a: common_vendor.f($setup.tabs, (item, index, i0) => {
       return {
         a: common_vendor.t(item.label),
@@ -109,7 +112,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       return {
         a: common_vendor.n("qi-" + (item == null ? void 0 : item.icon)),
         b: common_vendor.t(item == null ? void 0 : item.fxTime),
-        c: common_vendor.t(item.temp),
+        c: common_vendor.t(item == null ? void 0 : item.temp),
         d: index
       };
     }),
@@ -117,17 +120,19 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       return {
         a: common_vendor.n("qi-" + (item == null ? void 0 : item.iconDay)),
         b: common_vendor.t(item == null ? void 0 : item.fxDate),
-        c: common_vendor.t(item.tempMin),
-        d: common_vendor.t(item.tempMax),
+        c: common_vendor.t(item == null ? void 0 : item.tempMin),
+        d: common_vendor.t(item == null ? void 0 : item.tempMax),
         e: common_vendor.t(item == null ? void 0 : item.windDirDay),
         f: common_vendor.t(item == null ? void 0 : item.windScaleDay),
         g: common_vendor.t(item == null ? void 0 : item.textDay),
         h: index
       };
     }),
-    h: common_vendor.o((...args) => $setup.addCity && $setup.addCity(...args)),
-    i: common_vendor.o((...args) => $setup.swiperTab && $setup.swiperTab(...args))
-  };
+    h: $setup.dayWeather.length > 1
+  }, $setup.dayWeather.length > 1 ? {} : {}, {
+    i: common_vendor.o((...args) => $setup.addCity && $setup.addCity(...args)),
+    j: common_vendor.o((...args) => $setup.swiperTab && $setup.swiperTab(...args))
+  });
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/admin/Desktop/佩大悦/pages/tool/weather/index.vue"]]);
 wx.createPage(MiniProgramPage);

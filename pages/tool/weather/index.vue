@@ -33,8 +33,9 @@
 							</div>
 							<scroll-view style="height: 75px;margin: 25px 0px 0px 20px; " scroll-y="true">
 								<div v-for="(item, index) in hourWeather" :key="index">
-									<i :class="'qi-' + item?.icon" class="icon iconSmall" style="background-color: #394046;color: white;"></i>
-									<p style="margin: 0px 0px 20px 0px">{{ item?.fxTime }} {{ item.temp }}°C </p>
+									<i :class="'qi-' + item?.icon" class="icon iconSmall"
+										style="background-color: #394046;color: white;"></i>
+									<p style="margin: 0px 0px 20px 0px">{{ item?.fxTime }} {{ item?.temp }}°C </p>
 								</div>
 							</scroll-view>
 
@@ -43,12 +44,12 @@
 									<i :class="'qi-' + item?.iconDay" class="icon iconSmall"></i>
 									<p>{{ item?.fxDate }}</p>
 									<p style="margin: 0px 0px 20px 0px">
-										{{ item.tempMin }}/{{ item.tempMax }}°C {{ item?.windDirDay
+										{{ item?.tempMin }}/{{ item?.tempMax }}°C {{ item?.windDirDay
                     }}{{ item?.windScaleDay }}级 {{ item?.textDay }}
 									</p>
 								</div>
 							</div>
-							<div class="divBorder"></div>
+							<div class="divBorder" v-if="dayWeather.length>1"></div>
 						</scroll-view>
 					</swiper-item>
 				</block>
@@ -131,7 +132,9 @@
 						const tempValue = res.data as unknown as HourlyWeatherVo;
 						hourWeather.value = tempValue.hourly
 						for (let i = 0; i <= hourWeather.value.length; i++) {
-							hourWeather.value[i].fxTime = hourWeather.value[i].fxTime.slice(11, 16)
+							if (hourWeather.value[i]?.fxTime) {
+								hourWeather.value[i].fxTime = hourWeather.value[i].fxTime.slice(11, 16)
+							}
 						}
 					},
 				});
