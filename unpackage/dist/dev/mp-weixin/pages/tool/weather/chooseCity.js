@@ -2,7 +2,10 @@
 const common_vendor = require("../../../common/vendor.js");
 const _sfc_main = {
   setup() {
-    const cityID = common_vendor.ref("");
+    const cityObj = common_vendor.ref({
+      id: "",
+      name: ""
+    });
     const cityList = common_vendor.ref();
     const inputChangeCiity = (value) => {
       common_vendor.index.request({
@@ -13,10 +16,12 @@ const _sfc_main = {
         }
       });
     };
-    const chooseCity = (value) => {
-      cityID.value = value;
+    const chooseCity = (valueID, valueCity) => {
+      cityObj.value.id = valueID;
+      cityObj.value.name = valueCity;
+      const queryValue = JSON.stringify(cityObj.value);
       common_vendor.wx$1.navigateTo({
-        url: `/pages/tool/weather/index?city=${cityID.value}`
+        url: `/pages/tool/weather/index?queryValue=${queryValue}`
       });
     };
     return {
@@ -42,7 +47,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         g: common_vendor.t(item.adm2),
         h: common_vendor.t(item.name)
       }, {
-        i: common_vendor.o(($event) => $setup.chooseCity(item.id), index),
+        i: common_vendor.o(($event) => $setup.chooseCity(item.id, item.name), index),
         j: index
       });
     })

@@ -91,3 +91,8 @@ export interface HourlyType {
 	cloud : string;
 	dew : string;
 }
+
+export interface CityObjType {
+	id : string;
+	name : string
+}

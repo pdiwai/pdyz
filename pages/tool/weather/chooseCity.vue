@@ -5,7 +5,7 @@
 				@input="inputChangeCiity">
 
 			<div class="cityOption" v-for="(item, index) in cityList" :key="index">
-				<a @click='chooseCity(item.id)' style="color:#2e445e">
+				<a @click='chooseCity(item.id,item.name)' style="color:#2e445e">
 					<p v-if="item.adm2===item.name">{{item.country}}-{{item.adm1}}-{{item.adm2}}</p>
 					<p v-else>{{item.country}}-{{item.adm1}}-{{item.adm2}}-{{item.name}}</p>
 				</a>
@@ -19,12 +19,16 @@
 <script lang="ts">
 	import { ref } from "vue"
 	import {
-		CityVo, LocationType
+		CityVo, LocationType, CityObjType
 	} from "./type";
 
 	export default {
 		setup() {
-			const cityID = ref<string>('')
+
+			const cityObj = ref<CityObjType>({
+				id: '',
+				name: ''
+			})
 			const cityList = ref<Array<LocationType>>()
 			const inputChangeCiity = (value : any) => {
 				uni.request({
@@ -39,10 +43,12 @@
 				});
 			}
 
-			const chooseCity = (value : string) => {
-				cityID.value = value;
+			const chooseCity = (valueID : string, valueCity : string) => {
+				cityObj.value.id = valueID;
+				cityObj.value.name = valueCity;
+				const queryValue = JSON.stringify(cityObj.value)
 				wx.navigateTo({
-					url: `/pages/tool/weather/index?city=${cityID.value}`
+					url: `/pages/tool/weather/index?queryValue=${queryValue}`
 				})
 			}
 			return {
