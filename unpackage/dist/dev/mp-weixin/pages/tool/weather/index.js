@@ -2,42 +2,8 @@
 const common_vendor = require("../../../common/vendor.js");
 const _sfc_main = {
   setup() {
-    common_vendor.onLoad((value) => {
-      common_vendor.index.showLoading();
-      common_vendor.index.authorize({
-        scope: "scope.userFuzzyLocation",
-        complete() {
-          common_vendor.index.getFuzzyLocation({
-            type: "wgs84",
-            complete: function(res) {
-              common_vendor.index.hideLoading();
-              common_vendor.index.request({
-                url: `https://api.map.baidu.com/reverse_geocoding/v3`,
-                data: {
-                  ak: "F0As4YtFqDGWhV4OxyejeKKCKRI8yA2u",
-                  output: "json",
-                  coordtype: "wgs84ll",
-                  location: `${res.latitude},${res.longitude}`
-                },
-                success(res2) {
-                  const tempValue = res2.data.result;
-                  localAdmName.value = tempValue.addressComponent.city;
-                  localLocationName.value = tempValue.addressComponent.district;
-                  common_vendor.index.request({
-                    url: "https://geoapi.qweather.com/v2/city/lookup?location=" + localLocationName + "&adm=" + localAdmName + "&key=d4e3a54a435b49b684e4c84aecc63f9c",
-                    success(res3) {
-                      const tempValue2 = res3.data;
-                      if (tempValue2.location) {
-                        localLocationId.value = tempValue2.location[0].id;
-                      }
-                    }
-                  });
-                }
-              });
-            }
-          });
-        }
-      });
+    common_vendor.onLoad(async (value) => {
+      await common_vendor.index.showLoading();
       cityList.value = [];
       cityList.value.push({
         id: "101190201",
@@ -75,6 +41,42 @@ const _sfc_main = {
         getNowWeather(item.id);
         getDayWeather(item.id);
         getHourWeather(item.id);
+      });
+      common_vendor.index.authorize({
+        scope: "scope.userFuzzyLocation",
+        complete() {
+          common_vendor.index.getFuzzyLocation({
+            type: "wgs84",
+            complete: function(res) {
+              common_vendor.index.hideLoading();
+              common_vendor.index.request({
+                url: `https://api.map.baidu.com/reverse_geocoding/v3`,
+                data: {
+                  ak: "F0As4YtFqDGWhV4OxyejeKKCKRI8yA2u",
+                  output: "json",
+                  coordtype: "wgs84ll",
+                  location: `${res.latitude},${res.longitude}`
+                },
+                success(res2) {
+                  const tempValue = res2.data.result;
+                  localAdmName.value = tempValue.addressComponent.city;
+                  localLocationName.value = tempValue.addressComponent.district;
+                  cityList.value[0].name = tempValue.addressComponent.district;
+                  common_vendor.index.request({
+                    url: "https://geoapi.qweather.com/v2/city/lookup?location=" + localLocationName.value + "&adm=" + localAdmName.value + "&key=d4e3a54a435b49b684e4c84aecc63f9c",
+                    success(res3) {
+                      const tempValue2 = res3.data;
+                      if (tempValue2.location) {
+                        localLocationId.value = tempValue2.location[0].id;
+                        cityList.value[0].id = tempValue2.location[0].id;
+                      }
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
       });
     });
     const cityName = common_vendor.ref("无锡");

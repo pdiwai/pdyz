@@ -92,53 +92,11 @@
 
 	export default {
 		setup() {
-			onLoad((value) => {
-				uni.showLoading()
-				// 向提前用户发起授权请求,如果需要授权会自动弹出弹窗
-				// 弹窗及授权内容不用自己写
-				uni.authorize({
-					scope: 'scope.userFuzzyLocation',
-					complete() {
-						// 请求模糊地址经纬度
-						uni.getFuzzyLocation(({
-							type: 'wgs84',
-							complete: function (res : any) {
-								uni.hideLoading()
-								// 成功后调用逆地理api解析出实际位置
-								uni.request({
-									url: `https://api.map.baidu.com/reverse_geocoding/v3`,
-									data: {
-										ak: 'F0As4YtFqDGWhV4OxyejeKKCKRI8yA2u',
-										output: 'json',
-										coordtype: 'wgs84ll',
-										location: `${res.latitude},${res.longitude}`
-									},
-									success(res : any) {
-										const tempValue = res.data.result as unknown as RealLocationInfo
-										localAdmName.value = tempValue.addressComponent.city;
-										localLocationName.value = tempValue.addressComponent.district;
-										// 调用和风天气的城市搜索api找出，本地区级的id
-										uni.request({
-											url:
-												"https://geoapi.qweather.com/v2/city/lookup?location=" +
-												localLocationName + "&adm=" + localAdmName +
-												"&key=d4e3a54a435b49b684e4c84aecc63f9c",
-											success(res) {
-												const tempValue = res.data as unknown as CityVo;
-												if (tempValue.location) {
-													localLocationId.value = tempValue.location[0].id
-												}
-											},
-										});
-									},
-								});
-							}
-						}));
-					}
-				})
+			onLoad(async (value) => {
+				await uni.showLoading();
 				cityList.value = [];
 				cityList.value.push({
-					id: "101190201",
+					id: '101190201',
 					name: "无锡",
 					weatherInfo: {
 						nowFeelsLike: '',
@@ -177,8 +135,54 @@
 					getDayWeather(item.id);
 					getHourWeather(item.id);
 				})
+				// 向提前用户发起授权请求,如果需要授权会自动弹出弹窗
+				// 弹窗及授权内容不用自己写
+				uni.authorize({
+					scope: 'scope.userFuzzyLocation',
+					complete() {
+						// 请求模糊地址经纬度
+						uni.getFuzzyLocation(({
+							type: 'wgs84',
+							complete: function (res : any) {
+								uni.hideLoading()
+								// 成功后调用逆地理api解析出实际位置
+								uni.request({
+									url: `https://api.map.baidu.com/reverse_geocoding/v3`,
+									data: {
+										ak: 'F0As4YtFqDGWhV4OxyejeKKCKRI8yA2u',
+										output: 'json',
+										coordtype: 'wgs84ll',
+										location: `${res.latitude},${res.longitude}`
+									},
+									success(res : any) {
+										const tempValue = res.data.result as unknown as RealLocationInfo
+										localAdmName.value = tempValue.addressComponent.city;
+										localLocationName.value = tempValue.addressComponent.district;
+										cityList.value[0].name = tempValue.addressComponent.district;
+										// 调用和风天气的城市搜索api找出，本地区级的id
+										uni.request({
+											url:
+												"https://geoapi.qweather.com/v2/city/lookup?location=" +
+												localLocationName.value + "&adm=" + localAdmName.value +
+												"&key=d4e3a54a435b49b684e4c84aecc63f9c",
+											success(res) {
+												const tempValue = res.data as unknown as CityVo;
+												if (tempValue.location) {
+													localLocationId.value = tempValue.location[0].id
+													cityList.value[0].id = tempValue.location[0].id
+												}
+											},
+										});
+									},
+								});
+							}
+						}));
+					}
+				})
+
 
 			});
+
 			const cityName = ref<string>("无锡");
 			const cityList = ref<Array<CityObjType>>([]);
 			const tabs = [
