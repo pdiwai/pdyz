@@ -95,4 +95,37 @@ export interface HourlyType {
 export interface CityObjType {
 	id : string;
 	name : string
+	weatherInfo : WeatherInfoType
+}
+
+export interface WeatherInfoType {
+	nowIcon : string;
+	nowWindScale : string;
+	nowFeelsLike : string;
+	nowTemp : string;
+	hourInfo : Array<HourlyType>;
+	dayInfo : Array<DailyType>
+}
+
+export interface RealLocationInfo {
+	addressComponent : {
+		adcode : string;
+		city : string;
+		city_level : number;
+		country : string;
+		country_code : number;
+		country_code_iso : string;
+		country_code_iso2 : string;
+		direction : string;
+		distance : string;
+		district : string;
+		province : string;
+		street : string;
+		street_number : string;
+		town : string;
+		town_code : string;
+	};
+	formatted_address : string;
+	formatted_address_poi : string;
+	location : { lng : number, lat : number }
 }

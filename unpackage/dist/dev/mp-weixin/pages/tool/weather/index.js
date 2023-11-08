@@ -3,10 +3,53 @@ const common_vendor = require("../../../common/vendor.js");
 const _sfc_main = {
   setup() {
     common_vendor.onLoad((value) => {
+      common_vendor.index.showLoading();
+      common_vendor.index.authorize({
+        scope: "scope.userFuzzyLocation",
+        complete() {
+          common_vendor.index.getFuzzyLocation({
+            type: "wgs84",
+            complete: function(res) {
+              common_vendor.index.hideLoading();
+              common_vendor.index.request({
+                url: `https://api.map.baidu.com/reverse_geocoding/v3`,
+                data: {
+                  ak: "F0As4YtFqDGWhV4OxyejeKKCKRI8yA2u",
+                  output: "json",
+                  coordtype: "wgs84ll",
+                  location: `${res.latitude},${res.longitude}`
+                },
+                success(res2) {
+                  const tempValue = res2.data.result;
+                  localAdmName.value = tempValue.addressComponent.city;
+                  localLocationName.value = tempValue.addressComponent.district;
+                  common_vendor.index.request({
+                    url: "https://geoapi.qweather.com/v2/city/lookup?location=" + localLocationName + "&adm=" + localAdmName + "&key=d4e3a54a435b49b684e4c84aecc63f9c",
+                    success(res3) {
+                      const tempValue2 = res3.data;
+                      if (tempValue2.location) {
+                        localLocationId.value = tempValue2.location[0].id;
+                      }
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
       cityList.value = [];
       cityList.value.push({
         id: "101190201",
-        name: "无锡"
+        name: "无锡",
+        weatherInfo: {
+          nowFeelsLike: "",
+          nowIcon: "",
+          nowWindScale: "",
+          nowTemp: "",
+          dayInfo: [],
+          hourInfo: []
+        }
       });
       if (value.queryValue) {
         cityList.value.push(JSON.parse(value.queryValue));
@@ -15,10 +58,23 @@ const _sfc_main = {
         if (item.id !== "101190201") {
           const tempValue = {
             label: item.name,
-            index: item.id
+            index: item.id,
+            weatherInfo: {
+              nowFeelsLike: "",
+              nowIcon: "",
+              nowWindScale: "",
+              nowTemp: "",
+              dayInfo: [],
+              hourInfo: []
+            }
           };
           tabs.splice(tabs.length - 1, 0, tempValue);
         }
+      });
+      cityList.value.forEach((item) => {
+        getNowWeather(item.id);
+        getDayWeather(item.id);
+        getHourWeather(item.id);
       });
     });
     const cityName = common_vendor.ref("无锡");
@@ -29,59 +85,71 @@ const _sfc_main = {
     ];
     const currentTab = common_vendor.ref("");
     const weather = common_vendor.ref();
-    const location = common_vendor.ref([]);
     const dayWeather = common_vendor.ref([]);
     const hourWeather = common_vendor.ref([]);
-    const getCity = () => {
+    const localAdmName = common_vendor.ref("");
+    const localLocationName = common_vendor.ref("");
+    const localLocationId = common_vendor.ref("");
+    const getNowWeather = (location) => {
       common_vendor.index.request({
-        url: "https://geoapi.qweather.com/v2/city/lookup?location=" + cityName.value + "&key=d4e3a54a435b49b684e4c84aecc63f9c",
-        success(res) {
-          const tempValue = res.data;
-          location.value = tempValue.location;
-        }
-      });
-    };
-    const getNowWeather = () => {
-      common_vendor.index.request({
-        url: "https://devapi.qweather.com/v7/weather/now?location=101190201&key=d4e3a54a435b49b684e4c84aecc63f9c",
+        url: `https://devapi.qweather.com/v7/weather/now?location=${location}&key=d4e3a54a435b49b684e4c84aecc63f9c`,
         success(res) {
           const tempValue = res.data;
           weather.value = tempValue.now;
+          cityList.value.forEach((item) => {
+            if (item.id === location) {
+              item.weatherInfo.nowFeelsLike = tempValue.now.feelsLike;
+              item.weatherInfo.nowIcon = tempValue.now.icon;
+              item.weatherInfo.nowWindScale = tempValue.now.windScale;
+              item.weatherInfo.nowTemp = tempValue.now.temp;
+            }
+          });
         }
       });
     };
-    const getDayWeather = () => {
+    const getDayWeather = (location) => {
       common_vendor.index.request({
-        url: "https://devapi.qweather.com/v7/weather/7d?location=101190201&key=d4e3a54a435b49b684e4c84aecc63f9c",
+        url: `https://devapi.qweather.com/v7/weather/7d?location=${location}&key=d4e3a54a435b49b684e4c84aecc63f9c`,
         success(res) {
           const tempValue = res.data;
           dayWeather.value = tempValue.daily;
+          cityList.value.forEach((item) => {
+            if (item.id === location) {
+              item.weatherInfo.dayInfo = tempValue.daily;
+            }
+          });
         }
       });
     };
-    const getHourWeather = () => {
+    const getHourWeather = (location) => {
       common_vendor.index.request({
-        url: "https://devapi.qweather.com/v7/weather/24h?location=101190201&key=d4e3a54a435b49b684e4c84aecc63f9c",
+        url: `https://devapi.qweather.com/v7/weather/24h?location=${location}&key=d4e3a54a435b49b684e4c84aecc63f9c`,
         success(res) {
           var _a;
           const tempValue = res.data;
-          hourWeather.value = tempValue.hourly;
-          for (let i = 0; i <= hourWeather.value.length; i++) {
-            if ((_a = hourWeather.value[i]) == null ? void 0 : _a.fxTime) {
-              hourWeather.value[i].fxTime = hourWeather.value[i].fxTime.slice(
+          for (let i = 0; i <= tempValue.hourly.length; i++) {
+            if ((_a = tempValue.hourly[i]) == null ? void 0 : _a.fxTime) {
+              tempValue.hourly[i].fxTime = tempValue.hourly[i].fxTime.slice(
                 11,
                 16
               );
             }
           }
+          hourWeather.value = tempValue.hourly;
+          cityList.value.forEach((item) => {
+            if (item.id === location) {
+              item.weatherInfo.hourInfo = tempValue.hourly;
+            }
+          });
         }
       });
     };
     const init = () => {
-      getCity();
-      getNowWeather();
-      getDayWeather();
-      getHourWeather();
+      cityList.value.forEach((item) => {
+        getNowWeather(item.id);
+        getDayWeather(item.id);
+        getHourWeather(item.id);
+      });
     };
     init();
     const changeCurrentTab = (itemValue) => {
@@ -96,9 +164,7 @@ const _sfc_main = {
     };
     return {
       weather,
-      location,
       cityName,
-      getCity,
       getNowWeather,
       init,
       getDayWeather,
@@ -119,7 +185,6 @@ const _sfc_main = {
   }
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _a, _b, _c, _d;
   return {
     a: common_vendor.f($setup.tabs, (item, index, i0) => {
       return {
@@ -129,39 +194,40 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       };
     }),
     b: common_vendor.f($setup.cityList, (item, index, i0) => {
+      var _a, _b, _c, _d, _e, _f;
       return common_vendor.e({
-        a: common_vendor.f($setup.hourWeather, (item2, index2, i1) => {
+        a: common_vendor.n("qi-" + ((_a = item.weatherInfo) == null ? void 0 : _a.nowIcon)),
+        b: common_vendor.t((_b = item.weatherInfo) == null ? void 0 : _b.nowTemp),
+        c: common_vendor.t((_c = item.weatherInfo) == null ? void 0 : _c.nowWindScale),
+        d: common_vendor.t((_d = item.weatherInfo) == null ? void 0 : _d.nowFeelsLike),
+        e: common_vendor.f((_e = item.weatherInfo) == null ? void 0 : _e.hourInfo, (itemForHour, index2, i1) => {
           return {
-            a: common_vendor.n("qi-" + (item2 == null ? void 0 : item2.icon)),
-            b: common_vendor.t(item2 == null ? void 0 : item2.fxTime),
-            c: common_vendor.t(item2 == null ? void 0 : item2.temp),
+            a: common_vendor.n("qi-" + (itemForHour == null ? void 0 : itemForHour.icon)),
+            b: common_vendor.t(itemForHour == null ? void 0 : itemForHour.fxTime),
+            c: common_vendor.t(itemForHour == null ? void 0 : itemForHour.temp),
             d: index2
           };
         }),
-        b: common_vendor.f($setup.dayWeather, (item2, index2, i1) => {
+        f: common_vendor.f((_f = item.weatherInfo) == null ? void 0 : _f.dayInfo, (itemForDay, index2, i1) => {
           return {
-            a: common_vendor.n("qi-" + (item2 == null ? void 0 : item2.iconDay)),
-            b: common_vendor.t(item2 == null ? void 0 : item2.fxDate),
-            c: common_vendor.t(item2 == null ? void 0 : item2.tempMin),
-            d: common_vendor.t(item2 == null ? void 0 : item2.tempMax),
-            e: common_vendor.t(item2 == null ? void 0 : item2.windDirDay),
-            f: common_vendor.t(item2 == null ? void 0 : item2.windScaleDay),
-            g: common_vendor.t(item2 == null ? void 0 : item2.textDay),
+            a: common_vendor.n("qi-" + (itemForDay == null ? void 0 : itemForDay.iconDay)),
+            b: common_vendor.t(itemForDay == null ? void 0 : itemForDay.fxDate),
+            c: common_vendor.t(itemForDay == null ? void 0 : itemForDay.tempMin),
+            d: common_vendor.t(itemForDay == null ? void 0 : itemForDay.tempMax),
+            e: common_vendor.t(itemForDay == null ? void 0 : itemForDay.windDirDay),
+            f: common_vendor.t(itemForDay == null ? void 0 : itemForDay.windScaleDay),
+            g: common_vendor.t(itemForDay == null ? void 0 : itemForDay.textDay),
             h: index2
           };
         })
       }, $setup.dayWeather.length > 1 ? {} : {}, {
-        c: index
+        g: index
       });
     }),
-    c: common_vendor.n("qi-" + ((_a = $setup.weather) == null ? void 0 : _a.icon)),
-    d: common_vendor.t((_b = $setup.weather) == null ? void 0 : _b.temp),
-    e: common_vendor.t((_c = $setup.weather) == null ? void 0 : _c.windScale),
-    f: common_vendor.t((_d = $setup.weather) == null ? void 0 : _d.feelsLike),
-    g: $setup.dayWeather.length > 1,
-    h: common_vendor.o((...args) => $setup.addCity && $setup.addCity(...args)),
-    i: common_vendor.o((...args) => $setup.swiperTab && $setup.swiperTab(...args))
+    c: $setup.dayWeather.length > 1,
+    d: common_vendor.o((...args) => $setup.addCity && $setup.addCity(...args)),
+    e: common_vendor.o((...args) => $setup.swiperTab && $setup.swiperTab(...args))
   };
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/admin/Desktop/佩大悦/pages/tool/weather/index.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "C:/Users/admin/Desktop/胖大月子小程序/pages/tool/weather/index.vue"]]);
 wx.createPage(MiniProgramPage);

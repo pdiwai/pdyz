@@ -19,15 +19,15 @@
 <script lang="ts">
 	import { ref } from "vue"
 	import {
-		CityVo, LocationType, CityObjType
+		CityVo, LocationType
 	} from "./type";
 
 	export default {
 		setup() {
 
-			const cityObj = ref<CityObjType>({
+			const cityObj = ref<{ id : string; name : string }>({
 				id: '',
-				name: ''
+				name: '',
 			})
 			const cityList = ref<Array<LocationType>>()
 			const inputChangeCiity = (value : any) => {
